@@ -1,0 +1,916 @@
+{
+  "info": {
+    "name": "Proyecto IV API",
+    "description": "Colección para probar todos los endpoints de la API del Proyecto IV",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"asesor@ejemplo.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": ["{{base_url}}"],
+              "path": ["login"]
+            },
+            "description": "Iniciar sesión y obtener token"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.access_token) {",
+                  "    pm.collectionVariables.set(\"token\", jsonData.access_token);",
+                  "    console.log(\"Token guardado: \" + jsonData.access_token);",
+                  "    pm.test(\"Login exitoso\", function() {",
+                  "        pm.expect(jsonData.status).to.equal(\"success\");",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Rutas Públicas",
+      "item": [
+        {
+          "name": "Preguntas Frecuentes",
+          "item": [
+            {
+              "name": "Listar todas las preguntas",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/preguntas",
+                  "host": ["{{base_url}}"],
+                  "path": ["preguntas"]
+                }
+              }
+            },
+            {
+              "name": "Ver pregunta específica",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/preguntas/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["preguntas", "1"]
+                }
+              }
+            },
+            {
+              "name": "Filtrar por categoría",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/preguntas/categoria/general",
+                  "host": ["{{base_url}}"],
+                  "path": ["preguntas", "categoria", "general"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Galería",
+          "item": [
+            {
+              "name": "Listar todas las imágenes",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/galeria",
+                  "host": ["{{base_url}}"],
+                  "path": ["galeria"]
+                }
+              }
+            },
+            {
+              "name": "Ver imagen específica",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/galeria/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["galeria", "1"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Videos",
+          "item": [
+            {
+              "name": "Listar todos los videos",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/videos",
+                  "host": ["{{base_url}}"],
+                  "path": ["videos"]
+                }
+              }
+            },
+            {
+              "name": "Ver video específico",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/videos/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["videos", "1"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Contacto",
+          "item": [
+            {
+              "name": "Crear formulario de contacto",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Nombre de Prueba\",\n  \"email\": \"correo@ejemplo.com\",\n  \"asunto\": \"Asunto de Prueba\",\n  \"mensaje\": \"Mensaje de prueba para el formulario de contacto\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/contacto",
+                  "host": ["{{base_url}}"],
+                  "path": ["contacto"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Rutas Protegidas",
+      "item": [
+        {
+          "name": "Formularios de Contacto",
+          "item": [
+            {
+              "name": "Listar todos los formularios (Protegido)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/contacto",
+                  "host": ["{{base_url}}"],
+                  "path": ["contacto"]
+                }
+              }
+            },
+            {
+              "name": "Ver formulario específico (Protegido)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/contacto/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["contacto", "1"]
+                }
+              }
+            },
+            {
+              "name": "Filtrar por estado (Protegido)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/contacto/estado/pendiente",
+                  "host": ["{{base_url}}"],
+                  "path": ["contacto", "estado", "pendiente"]
+                }
+              }
+            },
+            {
+              "name": "Actualizar formulario (Protegido)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"estado\": \"procesado\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/contacto/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["contacto", "1"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Preguntas Frecuentes",
+          "item": [
+            {
+              "name": "Crear pregunta (Protegido)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pregunta\": \"¿Pregunta de prueba?\",\n  \"respuesta\": \"Respuesta de prueba\",\n  \"categoria\": \"general\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/preguntas",
+                  "host": ["{{base_url}}"],
+                  "path": ["preguntas"]
+                }
+              }
+            },
+            {
+              "name": "Actualizar pregunta (Protegido)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pregunta\": \"¿Pregunta actualizada?\",\n  \"respuesta\": \"Respuesta actualizada\",\n  \"categoria\": \"general\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/preguntas/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["preguntas", "1"]
+                }
+              }
+            },
+            {
+              "name": "Eliminar pregunta (Protegido)",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/preguntas/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["preguntas", "1"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Galería",
+          "item": [
+            {
+              "name": "Crear entrada de galería (Protegido)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Imagen de prueba\",\n  \"descripcion\": \"Descripción de la imagen de prueba\",\n  \"url_imagen\": \"https://ejemplo.com/imagen.jpg\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/galeria",
+                  "host": ["{{base_url}}"],
+                  "path": ["galeria"]
+                }
+              }
+            },
+            {
+              "name": "Actualizar entrada de galería (Protegido)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Imagen actualizada\",\n  \"descripcion\": \"Descripción actualizada\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/galeria/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["galeria", "1"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Videos",
+          "item": [
+            {
+              "name": "Crear video (Protegido)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Video de prueba\",\n  \"descripcion\": \"Descripción del video de prueba\",\n  \"url_video\": \"https://www.youtube.com/watch?v=dQw4w9WgXcQ\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/videos",
+                  "host": ["{{base_url}}"],
+                  "path": ["videos"]
+                }
+              }
+            },
+            {
+              "name": "Actualizar video (Protegido)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Video actualizado\",\n  \"descripcion\": \"Descripción actualizada\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/videos/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["videos", "1"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Valoraciones",
+          "item": [
+            {
+              "name": "Listar todas las valoraciones (Protegido)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/valoraciones",
+                  "host": ["{{base_url}}"],
+                  "path": ["valoraciones"]
+                }
+              }
+            },
+            {
+              "name": "Ver valoración específica (Protegido)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/valoraciones/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["valoraciones", "1"]
+                }
+              }
+            },
+            {
+              "name": "Filtrar por asesor (Protegido)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/valoraciones/asesor/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["valoraciones", "asesor", "1"]
+                }
+              }
+            },
+            {
+              "name": "Crear valoración (Protegido)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"asesor_id\": 1,\n  \"cliente_nombre\": \"Cliente Prueba\",\n  \"calificacion\": 5,\n  \"comentario\": \"Excelente servicio, muy recomendado\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/valoraciones",
+                  "host": ["{{base_url}}"],
+                  "path": ["valoraciones"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Mensajes Chat",
+          "item": [
+            {
+              "name": "Listar todos los mensajes (Protegido)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/mensajes",
+                  "host": ["{{base_url}}"],
+                  "path": ["mensajes"]
+                }
+              }
+            },
+            {
+              "name": "Ver mensaje específico (Protegido)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/mensajes/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["mensajes", "1"]
+                }
+              }
+            },
+            {
+              "name": "Crear mensaje (Protegido)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"emisor_id\": 1,\n  \"receptor_id\": 2,\n  \"mensaje\": \"Mensaje de prueba\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/mensajes",
+                  "host": ["{{base_url}}"],
+                  "path": ["mensajes"]
+                }
+              }
+            },
+            {
+              "name": "Obtener conversación (Protegido)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"emisor_id\": 1,\n  \"receptor_id\": 2\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/mensajes/conversacion",
+                  "host": ["{{base_url}}"],
+                  "path": ["mensajes", "conversacion"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Asesores",
+          "item": [
+            {
+              "name": "Listar todos los asesores (Protegido)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/asesores",
+                  "host": ["{{base_url}}"],
+                  "path": ["asesores"]
+                }
+              }
+            },
+            {
+              "name": "Ver asesor específico (Protegido)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/asesores/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["asesores", "1"]
+                }
+              }
+            },
+            {
+              "name": "Crear asesor (Protegido)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Nuevo Asesor\",\n  \"email\": \"nuevo@ejemplo.com\",\n  \"password\": \"password123\",\n  \"especialidad\": \"Marketing\",\n  \"descripcion\": \"Asesor de prueba para marketing\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/asesores",
+                  "host": ["{{base_url}}"],
+                  "path": ["asesores"]
+                }
+              }
+            },
+            {
+              "name": "Actualizar asesor (Protegido)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"especialidad\": \"Marketing Digital\",\n  \"descripcion\": \"Descripción actualizada del asesor\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/asesores/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["asesores", "1"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Logout (Último paso)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/logout",
+              "host": ["{{base_url}}"],
+              "path": ["logout"]
+            },
+            "description": "Cerrar sesión y revocar token"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Código pre-request global",
+          "// Aquí puedes añadir lógica que se ejecute antes de cada solicitud"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Código de prueba global",
+          "// Aquí puedes añadir pruebas globales que se ejecuten después de cada solicitud",
+          "",
+          "// Verificar que la respuesta es un JSON válido",
+          "try {",
+          "    var jsonData = pm.response.json();",
+          "    pm.test(\"Respuesta JSON válida\", function() {",
+          "        pm.expect(jsonData).to.not.equal(null);",
+          "    });",
+          "} catch(e) {",
+          "    console.log(\"La respuesta no es un JSON válido\");",
+          "}"
+        ]
+      }
+    }
+  ]
+}
