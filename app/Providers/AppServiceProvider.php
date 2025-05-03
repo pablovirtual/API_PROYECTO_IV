@@ -21,13 +21,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Ejecutar migraciones automáticamente en producción
+        // Ejecutar migraciones y seeders automáticamente en producción
         if (app()->environment('production')) {
             try {
                 Artisan::call('migrate', ['--force' => true]);
-                Log::info('Migraciones ejecutadas automáticamente en el arranque de la aplicación');
+                Artisan::call('db:seed', ['--force' => true]);
+                Log::info('Migraciones y seeders ejecutados automáticamente en el arranque de la aplicación');
             } catch (\Exception $e) {
-                Log::error('Error al ejecutar migraciones automáticas: ' . $e->getMessage());
+                Log::error('Error al ejecutar migraciones/seeders automáticos: ' . $e->getMessage());
             }
         }
     }
