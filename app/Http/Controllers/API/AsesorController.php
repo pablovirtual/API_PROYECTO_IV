@@ -158,14 +158,18 @@ class AsesorController extends Controller
             ], 422);
         }
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        // Buscar el usuario por email
+        $asesor = Asesor::where('email', $request->email)->first();
+        
+        // Si no encontramos al usuario o la contraseña no coincide (comparación directa)
+        if (!$asesor || $request->password !== $asesor->password) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Credenciales inválidas'
             ], 401);
         }
 
-        $asesor = Asesor::where('email', $request->email)->firstOrFail();
+        // Si llegamos aquí, la autenticación fue exitosa
         $token = $asesor->createToken('auth_token')->plainTextToken;
 
         return response()->json([
