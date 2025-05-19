@@ -45,6 +45,11 @@ Route::get('/', function () {
     ]);
 });
 
+// Health check en la API
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok'], 200);
+});
+
 // Rutas públicas
 Route::post('login', [AsesorController::class, 'login']);
 Route::post('contacto', [FormularioContactoController::class, 'store']);
@@ -143,4 +148,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('contacto/{id}', [FormularioContactoController::class, 'update']);
     Route::delete('contacto/{id}', [FormularioContactoController::class, 'destroy']);
     Route::get('contacto/estado/{estado}', [FormularioContactoController::class, 'getByEstado']);
+    
+    // Health check en la API
+    Route::get('/health', function () {
+        return response()->json(['status' => 'ok'], 200);
+    });
 });

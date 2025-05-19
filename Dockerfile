@@ -1,33 +1,35 @@
-FROM php:8.2-fpm
+FROM php:8.2-cli
 
-WORKDIR /var/www/html
+WORKDIR /app
 
+# Instalar dependencias
 RUN apt-get update && apt-get install -y \
     git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip
+    unzip \
+    libzip-dev \
+    && docker-php-ext-install zip pdo_mysql
 
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Instalar Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+# Copiar archivos de la aplicación
+COPY . .
 
-COPY . /var/www/html/
+# Instalar dependencias PHP
+RUN composer install --no-dev --optimize-autoloader
 
-RUN composer install --no-interaction --optimize-autoloader --no-dev
+# Ajustar permisos
+RUN chmod -R 777 storage bootstrap/cache
 
-RUN chmod -R 777 /var/www/html/storage
-RUN chmod -R 777 /var/www/html/bootstrap/cache
+# Generar clave de la aplicación si no existe
+RUN php artisan key:generate --force
 
-# Puerto que Railway utiliza por defecto
+# Optimizar la aplicación
+RUN php artisan config:cache && \
+    php artisan route:cache
+
+# Exponer puerto (Railway lo configurará en su entorno)
 EXPOSE 8080
 
-# Configurar variables importantes para Laravel
-ENV APP_ENV=production
-ENV APP_DEBUG=false
-
-# Iniciar Laravel en el puerto 8080 que Railway espera
-CMD php artisan serve --host=0.0.0.0 --port=8080
+# Iniciar la aplicación
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
