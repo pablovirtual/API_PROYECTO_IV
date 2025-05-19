@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-slim-bullseye
+FROM php:8.2-fpm-bullseye
 
 # Apply security updates
 RUN apt-get update && \
