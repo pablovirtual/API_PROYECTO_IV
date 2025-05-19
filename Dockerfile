@@ -21,8 +21,14 @@ RUN composer install --no-dev --optimize-autoloader
 # Ajustar permisos
 RUN chmod -R 777 storage bootstrap/cache
 
-# Generar clave de la aplicación si no existe
+# Crear un archivo .env básico para el comando key:generate
+RUN cp .env.example .env
+
+# Generar clave de la aplicación
 RUN php artisan key:generate --force
+
+# Eliminar el archivo .env (usaremos variables de entorno en producción)
+RUN rm .env
 
 # Optimizar la aplicación
 RUN php artisan config:cache && \

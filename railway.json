@@ -8,6 +8,20 @@
     "startCommand": "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 90,
-    "restartPolicyType": "ON_FAILURE"
+    "restartPolicyType": "ON_FAILURE",
+    "envs": [
+      {
+        "key": "APP_KEY",
+        "value": "base64:BCp6clXUG1UxLNfk5emvEXzJISZ3zc0bQfgfw0KxfS4="
+      },
+      {
+        "key": "APP_ENV",
+        "value": "production"
+      },
+      {
+        "key": "APP_DEBUG",
+        "value": "false"
+      }
+    ]
   }
 }
