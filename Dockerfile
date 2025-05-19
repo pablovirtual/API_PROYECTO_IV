@@ -1,4 +1,10 @@
-FROM php:8.1-fpm
+FROM php:8.2-fpm-slim-bullseye
+
+# Apply security updates
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends apt-utils && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -23,18 +29,24 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
+# Copy composer files first for better caching
+COPY composer.json composer.lock ./
+
+# Install dependencies
+RUN composer install --no-scripts --no-autoloader
+
 # Copy existing application directory
-COPY . /var/www/
+COPY . .
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www
 RUN chmod -R 755 /var/www/storage
 
-# Install dependencies
-RUN composer install --optimize-autoloader --no-dev
+# Generate autoloader files
+RUN composer dump-autoload --optimize --no-dev
 
 # Generate key
-RUN php artisan key:generate
+RUN php artisan key:generate --force
 
 # Configure Nginx
 COPY nginx.conf /etc/nginx/sites-available/default

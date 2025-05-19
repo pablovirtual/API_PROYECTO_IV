@@ -6,7 +6,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Añadir una ruta simple de verificación de salud
+// Add a simple health check route
 Route::get('/health', function () {
     return response()->json(['status' => 'ok'], 200);
 });
