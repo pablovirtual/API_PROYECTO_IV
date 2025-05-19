@@ -28,6 +28,12 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
+        // Asegurarse de que la ruta de health check esté disponible sin restricciones
+        Route::middleware('api')
+            ->get('/health', function () {
+                return response()->json(['status' => 'ok'], 200);
+            });
+
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
