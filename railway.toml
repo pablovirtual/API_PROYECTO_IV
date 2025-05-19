@@ -1,11 +1,12 @@
 [build]
-builder = "nixpacks"
-buildCommand = "composer install --optimize-autoloader --no-dev && php artisan config:cache && php artisan route:cache"
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "php artisan serve --host=0.0.0.0 --port=$PORT"
-healthcheckPath = "/api"
-healthcheckTimeout = 100
+numReplicas = 1
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
 
 [variables]
 PHP_VERSION = "8.2"
